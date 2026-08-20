@@ -21,6 +21,7 @@ export const triggerFields: INodeProperties[] = [
 		name: 'dateColumn',
 		type: 'options',
 		typeOptions: {
+			loadOptionsDependsOn: ['workspaceId.value', 'tableId.value'],
 			loadOptionsMethod: 'getDateColumns',
 		},
 		default: '',
