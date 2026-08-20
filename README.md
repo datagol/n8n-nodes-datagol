@@ -101,6 +101,12 @@ A common pattern is: *"When a row changes in Workbook A, update a related row in
 
 Guard against this by adding a **Filter** node between the trigger and the update action that only lets the item through when the target column is **not already** set to the value you're about to write. That way the loop naturally stops after one extra, harmless poll instead of repeating indefinitely. See [`examples/sync-with-loop-guard.workflow.json`](./examples/sync-with-loop-guard.workflow.json) for a complete example: two triggers (Row Added / Row Updated) feed into an `IF` node that checks a source column, then a `Filter` node that only writes when the destination column is out of sync, then an Update Row action.
 
+This loop-guard is also needed **across** workflows, not just within one: if Workflow A's action writes to a table that Workflow B's trigger watches (and vice versa), the two can keep re-triggering each other indefinitely even though each workflow looks correct in isolation. Apply the same "skip if already set" guard on every workflow that writes to a table another workflow polls.
+
+### Get Many → Update races within one poll batch
+
+If a trigger delivers more than one item in a single poll (for example, several rows added at once), and your workflow does a **Get Many** lookup followed by an **Update** on the result, each item runs that lookup independently and *before* any of the batch's updates have been written back. Two items that both resolve to the same target row will both find it in its pre-update state and both write to it — redundantly, but not incorrectly, if the write is idempotent (e.g. "set status to done"). If your update is not idempotent (e.g. incrementing a counter), add a **Split In Batches** node (or otherwise serialize the items) before the Get Many step so each item's lookup sees the previous item's write.
+
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/#community-nodes)
