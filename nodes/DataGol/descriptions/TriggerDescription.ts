@@ -26,7 +26,7 @@ export const triggerFields: INodeProperties[] = [
 		default: '',
 		required: true,
 		description:
-			'Column used to detect new/changed rows (must be a Date column). The matching DataGOL audit column is recommended and listed first. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
+			'Column used to detect new/changed rows. Works best with a Date column such as a created_at/updated_at audit column (listed first, marked Recommended), but any column in the workbook can be chosen. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'First Poll Behavior',

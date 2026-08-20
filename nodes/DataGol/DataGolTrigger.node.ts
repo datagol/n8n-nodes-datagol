@@ -46,7 +46,7 @@ export class DataGolTrigger implements INodeType {
 		group: ['trigger'],
 		version: 1,
 		subtitle: '={{$parameter["watchFor"]}}',
-		description: 'Starts the workflow when a row is added or updated in a DataGOL table',
+		description: 'Starts the workflow when a row is added or updated in a DataGOL workbook',
 		defaults: {
 			name: 'DataGOL Trigger',
 		},

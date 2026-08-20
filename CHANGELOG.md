@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 - Initial release.
 - **Credential**: DataGOL API (base URL + `x-auth-token` API token).
 - **DataGOL** action node (resource: Row):
-  - Add — insert a new row into a table.
+  - Add — insert a new row into a workbook.
   - Update — update an existing row by ID.
   - Get Many — query rows with a raw WHERE clause, sorting, and pagination.
 - **DataGOL Trigger** node (polling):

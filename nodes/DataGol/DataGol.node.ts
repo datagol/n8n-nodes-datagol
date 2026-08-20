@@ -28,7 +28,7 @@ export class DataGol implements INodeType {
 		group: ['input'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
-		description: 'Add, update, and query rows in a DataGOL table',
+		description: 'Add, update, and query rows in a DataGOL workbook',
 		defaults: {
 			name: 'DataGOL',
 		},

@@ -279,7 +279,12 @@ export async function getAllColumns(this: ILoadOptionsFunctions): Promise<INodeP
 		.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-/** DATE-typed columns for the trigger's "Date Column" picker, audit columns first. */
+/**
+ * All columns of the selected workbook for the trigger's "Date Column"
+ * picker, so the user can pick any column to key change-detection off of.
+ * DATE-typed audit columns (created_at/updated_at) are recommended and
+ * listed first since they work best for this purpose, but aren't required.
+ */
 export async function getDateColumns(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 	const workspaceId = this.getNodeParameter('workspaceId', undefined, {
 		extractValue: true,
@@ -296,10 +301,11 @@ export async function getDateColumns(this: ILoadOptionsFunctions): Promise<INode
 		return [];
 	}
 
+	const isRecommended = (column: DataGolColumn) => column.isAudit || column.uiDataType === 'DATE';
+
 	return table.columns
-		.filter((column) => column.uiDataType === 'DATE')
 		.map((column) => ({
-			name: column.isAudit
+			name: isRecommended(column)
 				? `${column.uiMetadata?.title ?? column.name} (Recommended)`
 				: (column.uiMetadata?.title ?? column.name),
 			value: column.name,

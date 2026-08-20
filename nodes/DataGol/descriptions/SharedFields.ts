@@ -6,7 +6,7 @@ export const workspaceIdField: INodeProperties = {
 	type: 'resourceLocator',
 	default: { mode: 'list', value: '' },
 	required: true,
-	description: 'The DataGOL workspace that contains the table',
+	description: 'The DataGOL workspace that contains the workbook',
 	modes: [
 		{
 			displayName: 'From List',
@@ -27,12 +27,12 @@ export const workspaceIdField: INodeProperties = {
 };
 
 export const tableIdField: INodeProperties = {
-	displayName: 'Table',
+	displayName: 'Workbook',
 	name: 'tableId',
 	type: 'resourceLocator',
 	default: { mode: 'list', value: '' },
 	required: true,
-	description: 'The DataGOL table to operate on',
+	description: 'The DataGOL workbook to operate on',
 	modes: [
 		{
 			displayName: 'From List',

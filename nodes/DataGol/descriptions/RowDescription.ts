@@ -14,17 +14,17 @@ export const rowOperations: INodeProperties[] = [
 			},
 		},
 		options: [
-			{ name: 'Add', value: 'add', description: 'Add a row to a table', action: 'Add a row' },
+			{ name: 'Add', value: 'add', description: 'Add a row to a workbook', action: 'Add a row' },
 			{
 				name: 'Update',
 				value: 'update',
-				description: 'Update a row in a table',
+				description: 'Update a row in a workbook',
 				action: 'Update a row',
 			},
 			{
 				name: 'Get Many',
 				value: 'getAll',
-				description: 'Query rows from a table',
+				description: 'Query rows from a workbook',
 				action: 'Get many rows',
 			},
 		],
