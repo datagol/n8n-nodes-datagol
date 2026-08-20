@@ -1,0 +1,51 @@
+{
+	"name": "n8n-nodes-datagol",
+	"version": "0.1.0",
+	"description": "n8n community node for DataGOL: add, update, and query rows, and trigger workflows when a row is added or updated",
+	"license": "MIT",
+	"homepage": "https://datagol.ai",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"author": {
+		"name": "Jyotish Bora",
+		"email": "jyotish.bora@datagol.ai"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/datagol-ai/n8n-nodes-datagol.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/DataGolApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/DataGol/DataGol.node.js",
+			"dist/nodes/DataGol/DataGolTrigger.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "^0.42.1",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}

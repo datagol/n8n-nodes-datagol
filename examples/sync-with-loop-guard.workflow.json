@@ -1,0 +1,278 @@
+{
+  "name": "DataGOL - Sync With Loop Guard (example)",
+  "nodes": [
+    {
+      "parameters": {
+        "workspaceId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_WORKSPACE_ID",
+          "cachedResultName": "My Workspace"
+        },
+        "tableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_TABLE_ID",
+          "cachedResultName": "My Table"
+        },
+        "watchFor": "added",
+        "dateColumn": "datagol_created_at",
+        "firstPollBehavior": "emitNothing",
+        "backfillCount": 10,
+        "additionalFilter": "",
+        "pageSize": 200
+      },
+      "type": "n8n-nodes-datagol.dataGolTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "b1f6a1a0-0000-4000-8000-000000000010",
+      "name": "On Row Added",
+      "credentials": {
+        "dataGolApi": {
+          "id": "",
+          "name": "DataGOL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workspaceId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_WORKSPACE_ID",
+          "cachedResultName": "My Workspace"
+        },
+        "tableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_TABLE_ID",
+          "cachedResultName": "My Table"
+        },
+        "watchFor": "updated",
+        "dateColumn": "datagol_updated_at",
+        "firstPollBehavior": "emitNothing",
+        "backfillCount": 10,
+        "additionalFilter": "",
+        "pageSize": 200
+      },
+      "type": "n8n-nodes-datagol.dataGolTrigger",
+      "typeVersion": 1,
+      "position": [0, 220],
+      "id": "b1f6a1a0-0000-4000-8000-000000000011",
+      "name": "On Row Updated",
+      "credentials": {
+        "dataGolApi": {
+          "id": "",
+          "name": "DataGOL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "should-sync-is-true",
+              "leftValue": "={{ String($json.cellValues.should_sync).toLowerCase() }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [280, 110],
+      "id": "b1f6a1a0-0000-4000-8000-000000000012",
+      "name": "Should Sync?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "sync-status-not-yet-synced",
+              "leftValue": "={{ String($json.cellValues.sync_status).toLowerCase() }}",
+              "rightValue": "synced",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [420, 0],
+      "id": "b1f6a1a0-0000-4000-8000-000000000015",
+      "name": "Only If Not Already Synced"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "sync-status-not-yet-pending",
+              "leftValue": "={{ String($json.cellValues.sync_status).toLowerCase() }}",
+              "rightValue": "pending",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [420, 220],
+      "id": "b1f6a1a0-0000-4000-8000-000000000016",
+      "name": "Only If Not Already Pending"
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "workspaceId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_WORKSPACE_ID",
+          "cachedResultName": "My Workspace"
+        },
+        "tableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_TABLE_ID",
+          "cachedResultName": "My Table"
+        },
+        "rowId": "={{ $json.id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sync_status": "synced"
+          }
+        },
+        "additionalCellValuesJson": ""
+      },
+      "type": "n8n-nodes-datagol.dataGol",
+      "typeVersion": 1,
+      "position": [700, 0],
+      "id": "b1f6a1a0-0000-4000-8000-000000000013",
+      "name": "Set sync_status = synced",
+      "credentials": {
+        "dataGolApi": {
+          "id": "",
+          "name": "DataGOL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "row",
+        "operation": "update",
+        "workspaceId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_WORKSPACE_ID",
+          "cachedResultName": "My Workspace"
+        },
+        "tableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "REPLACE_WITH_TABLE_ID",
+          "cachedResultName": "My Table"
+        },
+        "rowId": "={{ $json.id }}",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "sync_status": "pending"
+          }
+        },
+        "additionalCellValuesJson": ""
+      },
+      "type": "n8n-nodes-datagol.dataGol",
+      "typeVersion": 1,
+      "position": [700, 220],
+      "id": "b1f6a1a0-0000-4000-8000-000000000014",
+      "name": "Set sync_status = pending",
+      "credentials": {
+        "dataGolApi": {
+          "id": "",
+          "name": "DataGOL account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On Row Added": {
+      "main": [
+        [
+          { "node": "Should Sync?", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "On Row Updated": {
+      "main": [
+        [
+          { "node": "Should Sync?", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Should Sync?": {
+      "main": [
+        [
+          { "node": "Only If Not Already Synced", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Only If Not Already Pending", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Only If Not Already Synced": {
+      "main": [
+        [
+          { "node": "Set sync_status = synced", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Only If Not Already Pending": {
+      "main": [
+        [
+          { "node": "Set sync_status = pending", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
