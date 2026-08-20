@@ -38,6 +38,11 @@ function buildQueryBody(
 	return body;
 }
 
+// n8n's community-node verifier forbids `usableAsTool` on trigger nodes
+// (triggers can't be invoked as AI tools); the type only allows `true`, so
+// omitting the property is the only valid way to comply, which trips this
+// (trigger-unaware) rule.
+// eslint-disable-next-line @n8n/community-nodes/node-usable-as-tool
 export class DataGolTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'DataGOL Trigger',
@@ -50,7 +55,6 @@ export class DataGolTrigger implements INodeType {
 		defaults: {
 			name: 'DataGOL Trigger',
 		},
-		usableAsTool: true,
 		polling: true,
 		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
