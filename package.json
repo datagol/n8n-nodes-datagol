@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-datagol",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "n8n community node for DataGOL: add, update, and query rows, and trigger workflows when a row is added or updated",
 	"license": "MIT",
 	"homepage": "https://datagol.ai",
